@@ -2,6 +2,7 @@ FROM ubuntu:22.04
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
+    openssh-server \
     gcc \
     python3 \
     gdb \
@@ -22,7 +23,7 @@ RUN gcc /home/ctfuser/vuln.c -o /home/ctfuser/app \
 # Configure SSH
 RUN mkdir /var/run/sshd \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config \
-    &&  sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
 # Add hint file
 RUN echo "Hint: Is it safe to load any string?" > /home/ctfuser/hint.txt && \
