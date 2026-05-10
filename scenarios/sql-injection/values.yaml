@@ -1,10 +1,10 @@
 ---
-secret:
+secrets:
   flag: ...
 service_configs:
   web: {}
   db:
-    volumes:
-      init-sql:
-        src_map: "{{ scenario_dir }}/volumes/init.sql.template"
+    volume_map:
+      init_sql:
+        src_path: "{{ scenario_dir }}/volumes/init.sql.template"
         template_params: {}

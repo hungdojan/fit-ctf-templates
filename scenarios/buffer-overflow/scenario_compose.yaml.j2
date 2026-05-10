@@ -11,7 +11,7 @@ services:
     networks:
       {{ network_map__private }}:
     volumes:
-      - "{{ buff-overflow__volume_map__flagfile }}:/root/flag.txt:ro"
+      - "{{ node__volume_map__flagfile }}:/root/flag.txt:ro"
 
 networks:
   {{ network_map__private }}:

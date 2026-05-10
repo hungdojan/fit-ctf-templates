@@ -29,7 +29,7 @@ services:
     networks:
       - {{ project_name }}_{{ username }}_sql_internal_net
     volumes:
-      - {{ db__volume_map__init-sql }}:/docker-entrypoint-initdb.d/init.sql
+      - {{ db__volume_map__init_sql }}:/docker-entrypoint-initdb.d/init.sql
 
 
 # set networks as external
