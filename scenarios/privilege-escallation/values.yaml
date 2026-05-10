@@ -1,0 +1,9 @@
+---
+secrets:
+  flag: ...
+service_configs:
+  node:
+    volume_map:
+      flagfile:
+        src_path: "{{ scenario_dir }}/volumes/flag.txt.template"
+        template_params: {}

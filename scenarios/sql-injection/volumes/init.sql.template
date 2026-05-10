@@ -1,0 +1,13 @@
+CREATE DATABASE IF NOT EXISTS ctfdb;
+USE ctfdb;
+
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50),
+    password VARCHAR(50),
+    description VARCHAR(100)
+);
+
+INSERT INTO users (username, password, description) VALUES
+('admin', 'super_secret_pass', '{{ secret_map__flag }}'),
+('user', 'password123', 'Regular user');

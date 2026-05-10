@@ -1,0 +1,34 @@
+FROM ubuntu:22.04
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    openssh-server \
+    sudo \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create a low-privilege user
+RUN useradd -m -s /bin/bash ctfuser \
+    && echo 'ctfuser:password123' | chpasswd
+
+# Create vulnerable SUID binary
+COPY vuln.c /home/ctfuser/vuln.c
+RUN gcc /home/ctfuser/vuln.c -o /home/ctfuser/app \
+    && chmod 755 /home/ctfuser/app \
+    && chmod u+s /home/ctfuser/app
+
+# Flag will be mounted from host
+
+# Configure SSH
+RUN mkdir /var/run/sshd \
+    && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config \
+    &&  sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# Add hint file
+RUN echo "Hint: Try to find flag.txt" > /home/ctfuser/hint.txt && \
+    chown ctfuser:ctfuser /home/ctfuser/hint.txt
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]
+

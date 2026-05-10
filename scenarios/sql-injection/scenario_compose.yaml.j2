@@ -1,0 +1,39 @@
+---
+name: "{{ project_name }}_{{ username }}_sql-injection"
+
+services:
+  web:
+    build:
+      context: {{ paths__modules }}/sql-injection-web
+      dockerfile: Containerfile
+    image: fit-ctf/sql-injection-web:latest
+    restart: unless-stopped
+    networks:
+      - {{ network_map__private }}
+      - {{ project_name }}_{{ username }}_sql_internal_net
+    environment:
+      - MYSQL_HOST: db
+      - MYSQL_USER: ctf
+      - MYSQL_PASSWORD: ctfpass
+      - MYSQL_DATABASE: ctfdb
+    # example volume usage
+    depends_on:
+      - db
+  db:
+    image: docker.io/library/mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ctfdb
+      MYSQL_USER: ctf
+      MYSQL_PASSWORD: ctfpass
+    networks:
+      - {{ project_name }}_{{ username }}_sql_internal_net
+    volumes:
+      - {{ db__volume_map__init-sql }}:/docker-entrypoint-initdb.d/init.sql
+
+
+# set networks as external
+networks:
+  {{ network_map__private }}:
+    external: true
+  {{ project_name }}_{{ username }}_sql_internal_net:

@@ -1,0 +1,18 @@
+---
+name: "{{ project_name }}_{{ username }}_buffer-overflow"
+
+services:
+  node:
+    build:
+      context: {{ paths__modules }}/buff-overflow
+      dockerfile: Containerfile
+    image: fit-ctf/buff-overflow:latest
+    restart: unless-stopped
+    networks:
+      {{ network_map__private }}:
+    volumes:
+      - "{{ buff-overflow__volume_map__flagfile }}:/root/flag.txt:ro"
+
+networks:
+  {{ network_map__private }}:
+    external: true
